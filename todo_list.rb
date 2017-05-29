@@ -15,15 +15,11 @@ class TodoList
   end
 
   def add(title)
-    todo = Todo.new(title, false)
-    @todos.push(todo)
-    puts "'#{todo.title}' was added."
+    puts 'NOT IMPLEMENTED YET'
   end
 
   def remove(title)
-    todo = @todos.find { |todo| todo.title == title }
-    @todos.delete(todo)
-    puts "'#{todo.title}' was removed."
+    puts 'NOT IMPLEMENTED YET'
   end
 
   def mark(title)
@@ -37,13 +33,7 @@ class TodoList
   end
 
   def unmark(title)
-    todo = @todos.find { |todo| todo.title == title }
-    if todo
-      todo.completed = false
-      puts "'#{todo.title}' marked as uncompleted."
-    else
-      puts "Todo with title '#{title}' could not be found."
-    end
+    puts 'NOT IMPLEMENTED YET'
   end
 
   def save
