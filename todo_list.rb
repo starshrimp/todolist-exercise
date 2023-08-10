@@ -1,47 +1,57 @@
 require './storage'
+require "debug"
 
 class TodoList
   FILENAME = 'todo_list.csv'
-
   def initialize
     @storage = Storage.new(FILENAME)
     @todos = @storage.load
   end
 
   def print_todos
-    @todos.each do |todo|
-      puts "#{todo.title} (completed: #{todo.completed?})"
+    Todo.list.each do |todo|
+      puts "#{todo.title} (completed: #{todo.completed})"
     end
   end
 
   def add(title)
-    puts 'NOT IMPLEMENTED YET'
+    Todo.new(title, false)
   end
 
   def remove(title)
-    puts 'NOT IMPLEMENTED YET'
+    found_title = Todo.find(title)
+    Todo.remove(found_title)
   end
 
   def mark(title)
-    todo = @todos.find { |todo| todo.title == title }
+    todo = Todo.list.find { |todo| todo.title.include?(title) }
     if todo
       todo.completed = true
       puts "'#{todo.title}' marked as completed."
+      todo.mark(todo)
     else
       puts "Todo with title '#{title}' could not be found."
     end
   end
 
   def unmark(title)
-    puts 'NOT IMPLEMENTED YET'
+    todo = Todo.list.find { |todo| todo.title == title }
+    if todo
+      todo.completed = false
+      puts "'#{todo.title}' marked as not completed."
+      todo.unmark(todo)
+    else
+      puts "Todo with title '#{title}' could not be found."
+    end
   end
 
   def save
-    @storage.save(@todos)
+    @storage.save(@@all_todos)
   end
 end
 
 todo_list = TodoList.new
+
 
 def readline
   gets.chomp
@@ -65,10 +75,12 @@ loop do
     puts 'Enter the title of the todo:'
     title = readline
     todo_list.add(title)
+    todo_list.print_todos
   when 'remove'
     puts 'Enter the title of the todo:'
     title = readline
     todo_list.remove(title)
+    todo_list.print_todos
   when 'mark'
     puts 'Enter the title of the todo:'
     title = readline
