@@ -33,7 +33,6 @@ class TodoList
       puts "Todo with title '#{title}' could not be found."
     end
   end
-
   def unmark(title)
     todo = Todo.list.find { |todo| todo.title == title }
     if todo
@@ -44,13 +43,33 @@ class TodoList
       puts "Todo with title '#{title}' could not be found."
     end
   end
-
   def save
-    @storage.save(@@all_todos)
+    puts "Save this as: csv or html?"
+    type = gets.chomp
+    todos =Todo.list
+    if type == "csv"
+      @storage.save_in_csv("todo_list.csv", todos)
+      puts "Written CSV export to file todo_list.csv."
+    elsif type == "html"
+      html_string = prepare_html
+      @storage.save_in_html("todos.html", html_string)
+      puts "Written export to file todos.html."
+    end
+  end
+  def prepare_html
+    todos =Todo.list
+    html_string = "<h1> List of Tasks to do </h1> <br>\n <ul>"
+    todos.each do |task|
+      html_string += "<li> #{task.title}: #{task.completed} </li> \n"
+    end
+    html_string += "</ul>"
+    return html_string
   end
 end
 
+
 todo_list = TodoList.new
+
 
 
 def readline

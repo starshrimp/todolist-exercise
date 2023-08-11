@@ -15,11 +15,17 @@ class Storage
     todos
   end
 
-  def save(todos)
-    CSV.open(@filename, 'wb') do |csv|
+  def save_in_csv(filename, todos)
+    CSV.open(filename, 'wb') do |csv|
       todos.each do |todo|
-        csv << [todo.title, todo.completed?]
+        csv << [todo.title, todo.completed]
       end
     end
   end
+  def save_in_html(filename, content)
+    File.open(filename, "w") do |file|
+      file.write(content)
+    end
+  end
+
 end
